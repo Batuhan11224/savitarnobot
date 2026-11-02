@@ -21,7 +21,10 @@ MAIN_MENU = types.ReplyKeyboardMarkup(
             types.KeyboardButton(text="👤 Profilim"),
         ],
         [
+            types.KeyboardButton(text="📱 Numara Al"),
             types.KeyboardButton(text="📞 Destek"),
+        ],
+        [
             types.KeyboardButton(text="ℹ️ Yardım"),
         ],
     ],
@@ -46,7 +49,8 @@ async def help_cmd(message: types.Message) -> None:
         "Kullanılabilir seçenekler:\n"
         "💰 Bakiye - Bakiye özelliği henüz bağlanmadı.\n"
         "👤 Profilim - Profil özelliği henüz bağlanmadı.\n"
-        "📞 Destek - Destek özelliği henüz bağlanmadı.\n"
+        "📱 Numara Al - Site bağlantısı henüz yapılandırılmadı.\n"
+        "📞 Destek - Destek özelliği henüz yapılandırılmadı.\n"
         "/start - Ana menüyü açar"
     )
 
@@ -62,6 +66,14 @@ async def profile_cmd(message: types.Message) -> None:
     await message.answer(
         f"Telegram ID: {message.from_user.id}\n"
         f"Kullanıcı adı: {username}"
+    )
+
+
+@dp.message(lambda message: message.text == "📱 Numara Al")
+async def number_cmd(message: types.Message) -> None:
+    await message.answer(
+        "Site bağlantısı henüz yapılandırılmadı. "
+        "Veri aktarımı, gerekli izinler ve bağlantı ayarları tamamlandığında etkinleştirilecek."
     )
 
 
