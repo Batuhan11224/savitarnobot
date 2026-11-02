@@ -14,22 +14,60 @@ BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 dp = Dispatcher()
 
+MAIN_MENU = types.ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            types.KeyboardButton(text="💰 Bakiye"),
+            types.KeyboardButton(text="👤 Profilim"),
+        ],
+        [
+            types.KeyboardButton(text="📞 Destek"),
+            types.KeyboardButton(text="ℹ️ Yardım"),
+        ],
+    ],
+    resize_keyboard=True,
+    input_field_placeholder="Bir seçenek seçin...",
+)
+
 
 @dp.message(Command("start"))
 async def start_cmd(message: types.Message) -> None:
     await message.answer(
         "Merhaba! Bot çalışıyor.\n"
-        "Komutlar için /help yazabilirsin."
+        "Aşağıdaki menüden bir seçenek seçebilirsin.",
+        reply_markup=MAIN_MENU,
     )
 
 
 @dp.message(Command("help"))
+@dp.message(lambda message: message.text == "ℹ️ Yardım")
 async def help_cmd(message: types.Message) -> None:
     await message.answer(
-        "Kullanılabilir komutlar:\n"
-        "/start - Botu başlatır\n"
-        "/help - Yardım mesajını gösterir"
+        "Kullanılabilir seçenekler:\n"
+        "💰 Bakiye - Bakiye özelliği henüz bağlanmadı.\n"
+        "👤 Profilim - Profil özelliği henüz bağlanmadı.\n"
+        "📞 Destek - Destek özelliği henüz bağlanmadı.\n"
+        "/start - Ana menüyü açar"
     )
+
+
+@dp.message(lambda message: message.text == "💰 Bakiye")
+async def balance_cmd(message: types.Message) -> None:
+    await message.answer("Bakiye görüntüleme henüz etkinleştirilmedi.")
+
+
+@dp.message(lambda message: message.text == "👤 Profilim")
+async def profile_cmd(message: types.Message) -> None:
+    username = f"@{message.from_user.username}" if message.from_user.username else "Belirtilmemiş"
+    await message.answer(
+        f"Telegram ID: {message.from_user.id}\n"
+        f"Kullanıcı adı: {username}"
+    )
+
+
+@dp.message(lambda message: message.text == "📞 Destek")
+async def support_cmd(message: types.Message) -> None:
+    await message.answer("Destek özelliği henüz yapılandırılmadı. Lütfen daha sonra tekrar deneyin.")
 
 
 async def main() -> None:
